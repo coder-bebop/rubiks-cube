@@ -42,7 +42,8 @@ function printCube(cube) {
 	console.log("----------\n");
 }
 
-function doMove(cube, move) {
+// size needs to be the actual size - 1
+function doMove(cube, size, move) {
 	console.log("Move: ", move);
 	switch(move) {
 		case moves.U:
@@ -62,8 +63,20 @@ function doMove(cube, move) {
 			cube[1][0] = temp;
 			break;
 		case moves.D:
+			cube[5] = rotateClockwise(cube[5]);
+			temp = cube[0][size];
+			cube[0][size] = cube[3][size];
+			cube[3][size] = cube[2][size];
+			cube[2][size] = cube[1][size];
+			cube[1][size] = temp;
 			break;
 		case moves.DP:
+			cube[5] = rotateCounterClockwise(cube[5]);
+			temp = cube[0][size];
+			cube[0][size] = cube[1][size];
+			cube[1][size] = cube[2][size];
+			cube[2][size] = cube[3][size];
+			cube[3][size] = temp;
 			break;
 		case moves.R:
 			break;
@@ -117,6 +130,6 @@ function rotateCounterClockwise(a){
 }
 
 let cube = createCube(3);
-cube[4][0][1] = "X";
+cube[5][0][1] = "X";
 printCube(cube);
-cube = doMove(cube, moves.UP);
+cube = doMove(cube, 2, moves.DP);
