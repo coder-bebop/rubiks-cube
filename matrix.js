@@ -83,21 +83,33 @@ function doMove(cube, move) {
 			cube[1] = rotateClockwise(cube[1]);
 			temp = getColumn(cube[0], size);
 			setColumn(cube[0], size, getColumn(cube[5], size));
-			setColumn(cube[5], size, getColumn(cube[2], size));
-			setColumn(cube[2], size, getColumn(cube[4], size));
+			setColumn(cube[5], size, getColumn(cube[2], 0));
+			setColumn(cube[2], 0, getColumn(cube[4], size));
 			setColumn(cube[4], size, temp);
 			break;
 		case moves.RP:
 			cube[1] = rotateCounterClockwise(cube[1]);
 			temp = getColumn(cube[0], size);
 			setColumn(cube[0], size, getColumn(cube[4], size));
-			setColumn(cube[4], size, getColumn(cube[2], size));
-			setColumn(cube[2], size, getColumn(cube[5], size));
+			setColumn(cube[4], size, getColumn(cube[2], 0));
+			setColumn(cube[2], 0, getColumn(cube[5], size));
 			setColumn(cube[5], size, temp);
 			break;
 		case moves.L:
+			cube[3] = rotateClockwise(cube[3]);
+			temp = getColumn(cube[0], 0);
+			setColumn(cube[0], 0, getColumn(cube[4], 0));
+			setColumn(cube[4], 0, getColumn(cube[2], size));
+			setColumn(cube[2], size, getColumn(cube[5], 0));
+			setColumn(cube[5], 0, temp);
 			break;
 		case moves.LP:
+			cube[3] = rotateCounterClockwise(cube[3]);
+			temp = getColumn(cube[0], 0);
+			setColumn(cube[0], 0, getColumn(cube[5], 0));
+			setColumn(cube[5], 0, getColumn(cube[2], size));
+			setColumn(cube[2], size, getColumn(cube[4], 0));
+			setColumn(cube[4], 0, temp);
 			break;
 		case moves.F:
 			break;
@@ -128,7 +140,7 @@ function rotateClockwise(a) {
 	return a;
 }
 
-function rotateCounterClockwise(a){
+function rotateCounterClockwise(a) {
 	var n=a.length;
 	for (var i=0; i<n/2; i++) {
 		for (var j=i; j<n-i-1; j++) {
@@ -160,6 +172,5 @@ function setColumn(a, n, col) {
 }
 
 let cube = createCube(3);
-cube[1][0][1] = "X";
 printCube(cube);
-cube = doMove(cube, moves.RP);
+cube = doMove(cube, moves.L);
