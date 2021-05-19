@@ -44,7 +44,63 @@ function printCube(cube) {
 
 function doMove(cube, move) {
 	console.log("Move: ", move);
-	printCube(cube)
+	switch(move) {
+		case moves.U:
+			break;
+		case moves.UP:
+			break;
+		case moves.D:
+			break;
+		case moves.DP:
+			break;
+		case moves.R:
+			break;
+		case moves.RP:
+			break;
+		case moves.L:
+			break;
+		case moves.LP:
+			break;
+		case moves.F:
+			break;
+		case moves.FP:
+			break;
+		case moves.B:
+			break;
+		case moves.BP:
+			break;
+		default:
+			console.log("ERROR: invalid move");
+	}
+	printCube(cube);
+}
+
+function rotateClockwise(a) {
+	var n=a.length;
+	for (var i=0; i<n/2; i++) {
+		for (var j=i; j<n-i-1; j++) {
+			var tmp=a[i][j];
+			a[i][j]=a[n-j-1][i];
+			a[n-j-1][i]=a[n-i-1][n-j-1];
+			a[n-i-1][n-j-1]=a[j][n-i-1];
+			a[j][n-i-1]=tmp;
+		}
+	}
+	return a;
+}
+
+function rotateCounterClockwise(a){
+	var n=a.length;
+	for (var i=0; i<n/2; i++) {
+		for (var j=i; j<n-i-1; j++) {
+			var tmp=a[i][j];
+			a[i][j]=a[j][n-i-1];
+			a[j][n-i-1]=a[n-i-1][n-j-1];
+			a[n-i-1][n-j-1]=a[n-j-1][i];
+			a[n-j-1][i]=tmp;
+		}
+	}
+	return a;
 }
 
 let cube = createCube(10);
