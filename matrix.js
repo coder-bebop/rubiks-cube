@@ -128,14 +128,45 @@ function doMove(cube, move) {
 			setColumn(cube[3], size, temp.slice().reverse());
 			break;
 		case moves.B:
+			cube[2] = rotateClockwise(cube[2]);
+			temp = cube[4][0];
+			cube[4][0] = getColumn(cube[1], size);
+			setColumn(cube[1], size, cube[5][size].slice().reverse());
+			cube[5][size] = getColumn(cube[3], 0);
+			setColumn(cube[3], 0, temp.slice().reverse());
 			break;
 		case moves.BP:
+			cube[2] = rotateCounterClockwise(cube[2]);
+			temp = cube[4][0];
+			cube[4][0] = getColumn(cube[3], 0).reverse();
+			setColumn(cube[3], 0, cube[5][size]);
+			cube[5][size] = getColumn(cube[1], size).reverse();
+			setColumn(cube[1], size, temp);
 			break;
 		default:
 			console.log("ERROR: invalid move");
 	}
 	printCube(cube);
+	if(isSolved(cube)) {
+		console.log("!!!!!!!!!!");
+		console.log("The cube is solved.");
+		console.log("!!!!!!!!!!");
+	}
 	return cube;
+}
+
+function isSolved(cube) {
+	const size = cube[0].length;
+	for(let i = 0; i < 6; i++) {
+		for(let j = 0; j < size; j++) {
+			for(let k = 0; k < size; k++) {
+				if(cube[i][j][k] != i) {
+					return false;
+				}
+			}
+		}
+	}
+	return true;
 }
 
 function rotateClockwise(a) {
@@ -184,6 +215,8 @@ function setColumn(a, n, col) {
 }
 
 let cube = createCube(3);
-cube[0][0][0] = "x";
-printCube(cube);
+cube = doMove(cube, moves.R);
 cube = doMove(cube, moves.FP);
+cube = doMove(cube, moves.UP);
+cube = doMove(cube, moves.B);
+cube = doMove(cube, moves.D);
