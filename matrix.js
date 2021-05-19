@@ -42,13 +42,13 @@ function printCube(cube) {
 	console.log("----------\n");
 }
 
-// size needs to be the actual size - 1
-function doMove(cube, size, move) {
+function doMove(cube, move) {
 	console.log("Move: ", move);
+	const size = cube[0].length - 1;
 	switch(move) {
 		case moves.U:
 			cube[4] = rotateClockwise(cube[4]);
-			temp = cube[0][0];
+			const temp = cube[0][0];
 			cube[0][0] = cube[1][0];
 			cube[1][0] = cube[2][0];
 			cube[2][0] = cube[3][0];
@@ -56,7 +56,7 @@ function doMove(cube, size, move) {
 			break;
 		case moves.UP:
 			cube[4] = rotateCounterClockwise(cube[4]);
-			temp = cube[0][0];
+			const temp = cube[0][0];
 			cube[0][0] = cube[3][0];
 			cube[3][0] = cube[2][0];
 			cube[2][0] = cube[1][0];
@@ -64,7 +64,7 @@ function doMove(cube, size, move) {
 			break;
 		case moves.D:
 			cube[5] = rotateClockwise(cube[5]);
-			temp = cube[0][size];
+			const temp = cube[0][size];
 			cube[0][size] = cube[3][size];
 			cube[3][size] = cube[2][size];
 			cube[2][size] = cube[1][size];
@@ -72,13 +72,14 @@ function doMove(cube, size, move) {
 			break;
 		case moves.DP:
 			cube[5] = rotateCounterClockwise(cube[5]);
-			temp = cube[0][size];
+			const temp = cube[0][size];
 			cube[0][size] = cube[1][size];
 			cube[1][size] = cube[2][size];
 			cube[2][size] = cube[3][size];
 			cube[3][size] = temp;
 			break;
 		case moves.R:
+			cube[1] = rotateCounterClockwise(cube[1]);
 			break;
 		case moves.RP:
 			break;
@@ -129,7 +130,24 @@ function rotateCounterClockwise(a){
 	return a;
 }
 
+function getColumn(a, n) {
+	let res = [];
+	const size = a.length - 1;
+	for(let i = 0; i < size; i++) {
+		res.push(a[i][n]);
+	}
+	return res;
+}
+
+function setColumn(a, n, col) {
+	const size = a.length - 1;
+	for(let i = 0; i < size; i++) {
+		a[i][n] = col[i];
+	}
+	return a;
+}
+
 let cube = createCube(3);
 cube[5][0][1] = "X";
 printCube(cube);
-cube = doMove(cube, 2, moves.DP);
+cube = doMove(cube, moves.DP);
