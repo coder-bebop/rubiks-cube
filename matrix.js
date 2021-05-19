@@ -112,8 +112,20 @@ function doMove(cube, move) {
 			setColumn(cube[4], 0, temp);
 			break;
 		case moves.F:
+			cube[0] = rotateClockwise(cube[0]);
+			temp = cube[4][size];
+			cube[4][size] = getColumn(cube[3], size).reverse();
+			setColumn(cube[3], size, cube[5][0]);
+			cube[5][0] = getColumn(cube[1], 0).reverse();
+			setColumn(cube[1], 0, temp);
 			break;
 		case moves.FP:
+			cube[0] = rotateCounterClockwise(cube[0]);
+			temp = cube[4][size];
+			cube[4][size] = getColumn(cube[1], 0);
+			setColumn(cube[1], 0, cube[5][0].slice().reverse());
+			cube[5][0] = getColumn(cube[3], size);
+			setColumn(cube[3], size, temp.slice().reverse());
 			break;
 		case moves.B:
 			break;
@@ -172,5 +184,6 @@ function setColumn(a, n, col) {
 }
 
 let cube = createCube(3);
+cube[0][0][0] = "x";
 printCube(cube);
-cube = doMove(cube, moves.L);
+cube = doMove(cube, moves.FP);
