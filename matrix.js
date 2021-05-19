@@ -46,8 +46,20 @@ function doMove(cube, move) {
 	console.log("Move: ", move);
 	switch(move) {
 		case moves.U:
+			cube[4] = rotateClockwise(cube[4]);
+			temp = cube[0][0];
+			cube[0][0] = cube[1][0];
+			cube[1][0] = cube[2][0];
+			cube[2][0] = cube[3][0];
+			cube[3][0] = temp;
 			break;
 		case moves.UP:
+			cube[4] = rotateCounterClockwise(cube[4]);
+			temp = cube[0][0];
+			cube[0][0] = cube[3][0];
+			cube[3][0] = cube[2][0];
+			cube[2][0] = cube[1][0];
+			cube[1][0] = temp;
 			break;
 		case moves.D:
 			break;
@@ -73,6 +85,7 @@ function doMove(cube, move) {
 			console.log("ERROR: invalid move");
 	}
 	printCube(cube);
+	return cube;
 }
 
 function rotateClockwise(a) {
@@ -103,5 +116,7 @@ function rotateCounterClockwise(a){
 	return a;
 }
 
-let cube = createCube(10);
-doMove(cube, moves.UP);
+let cube = createCube(3);
+cube[4][0][1] = "X";
+printCube(cube);
+cube = doMove(cube, moves.UP);
