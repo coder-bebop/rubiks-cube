@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Rubik Cube</title>
+  <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC' rel='stylesheet' type='text/css'>
+  <link href="style.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <ul id="controls">
+    <!--<li><a href="#shuffle" id="button-shuffle">Shuffle</a></li>
+    <li><a href="#solve" id="button-solve">Solve</a></li>
+    <li><a href="#undo" id="button-undo">Undo</a></li>
+    <li><a href="#reset" id="button-reset">Reset</a></li>
+    -->
+    <li>
+      <label>Size</label>
+      <select id="select-size">
+        <option value="2">2x2</option>
+        <option value="3">3x3</option>
+      </select>
+    </li>
+  </ul>
+
+  <div id="scene"></div>
+
+  <script src="lib/jquery.js"></script>
+  <script src="lib/three.js"></script>
+  <script src="lib/OrbitControls.js"></script>
+  <script src="lib/rubik.js"></script>
+  
+  <script>
+
+    $(function() {
+      function init(dimensions) {
+        dimensions = +(dimensions) || 2;
+
+        var element = $("#scene").empty();
+        var rubik = new Rubik(element, dimensions);
+
+        $("#select-size").on('change', function() { init($(this).val()) });        
+      };
+
+      init();
+
+    });
+
+  </script>
+
+</body>
+
+</html>
