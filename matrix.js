@@ -148,9 +148,7 @@ function doMove(cube, move) {
 	}
 	printCube(cube);
 	if(isSolved(cube)) {
-		console.log("!!!!!!!!!!");
-		console.log("The cube is solved.");
-		console.log("!!!!!!!!!!");
+		win();
 	}
 	return cube;
 }
@@ -167,6 +165,20 @@ function isSolved(cube) {
 		}
 	}
 	return true;
+}
+
+function win() {
+	console.log("!!!!!!!!!!");
+	console.log("The cube is solved.");
+	console.log("!!!!!!!!!!");
+}
+
+function shuffle(cube) {
+	const moves = 100;
+	for(let i = 0; i < 100; i++) {
+		cube = doMove(cube, getRandomMove());
+	}
+	return cube;
 }
 
 function rotateClockwise(a) {
@@ -214,9 +226,11 @@ function setColumn(a, n, col) {
 	return a;
 }
 
+function getRandomMove() {
+    const keys = Object.keys(moves);
+    return moves[keys[keys.length * Math.random() << 0]];
+};
+
 let cube = createCube(3);
-cube = doMove(cube, moves.R);
-cube = doMove(cube, moves.FP);
-cube = doMove(cube, moves.UP);
-cube = doMove(cube, moves.B);
-cube = doMove(cube, moves.D);
+printCube(cube);
+shuffle(cube);
