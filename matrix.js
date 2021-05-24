@@ -248,5 +248,5 @@ let history = [];
 
 printCube(cube);
 shuffle(cube);
-cube = doMove(cube, moves.UP);
+doMove(cube, moves.UP);
 printHistory();
