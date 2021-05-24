@@ -44,6 +44,7 @@ function printCube(cube) {
 
 function doMove(cube, move) {
 	console.log("Move: ", move);
+	history.push(move);
 	const size = cube[0].length - 1;
 	let temp;
 	switch(move) {
@@ -171,6 +172,8 @@ function win() {
 	console.log("!!!!!!!!!!");
 	console.log("The cube is solved.");
 	console.log("!!!!!!!!!!");
+	console.log("Move history:");
+	printHistory();
 }
 
 function shuffle(cube) {
@@ -178,6 +181,7 @@ function shuffle(cube) {
 	for(let i = 0; i < 100; i++) {
 		cube = doMove(cube, getRandomMove());
 	}
+	history = [];
 	return cube;
 }
 
@@ -231,6 +235,18 @@ function getRandomMove() {
     return moves[keys[keys.length * Math.random() << 0]];
 };
 
+function printHistory() {
+	let str = "";
+	for(let i = 0; i < history.length; i++) {
+		str += (history[i] + ", ")
+	}
+	console.log(str.substring(0, str.length - 2));
+}
+
 let cube = createCube(3);
+let history = [];
+
 printCube(cube);
 shuffle(cube);
+cube = doMove(cube, moves.UP);
+printHistory();
