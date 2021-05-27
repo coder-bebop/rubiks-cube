@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding-top: 100px;
+		}
+		img {
+			margin: 20px;
+		}
+		h5 {
+			min-width: 70px;
+			margin-left: 20px;
+		}
+		button {
+			margin-top: 20px;
+		}
+		.option {
+			margin-top: 20px;
+		}
+		.color {
+			display: flex;
+			flex-direction: row;
+			margin: 20px;
+		}
+		.form-control-color {
+			min-width: 50px;
+		}
+	</style>
+	<title>Rubik's Cube</title>
+</head>
+<body>
+	<h1>Rubik's Cube</h1>
+	<img src="cubes.jpeg">
+	<h3>Options:</h3>
+	<div class="option">
+		<h4>Cube's dimensions:</h4>
+		<select id="dimensions" class="form-select form-select-lg">
+			<option value="2" selected>2x2</option>
+			<option value="3">3x3</option>
+		</select>
+	</div>
+	<div class="option">
+		<h4>Colors:</h4>
+
+		<div class="color">
+			<h5>Face 0:</h5>
+			<input id="face0" type="color" class="form-control form-control-color" value="#ff0000">
+
+			<h5>Face 1:</h5>
+			<input id="face1" type="color" class="form-control form-control-color" value="#228B22">
+
+			<h5>Face 2:</h5>
+			<input id="face2" type="color" class="form-control form-control-color" value="#ff7700">
+		</div>
+
+		<div class="color">
+			<h5>Face 3:</h5>
+			<input id="face3" type="color" class="form-control form-control-color" value="#0000ff">
+
+			<h5>Face 4:</h5>
+			<input id="face4" type="color" class="form-control form-control-color" value="#cccc00">
+
+			<h5>Face 5:</h5>
+			<input id="face5" type="color" class="form-control form-control-color" value="#ffffff">
+		</div>
+	</div>
+
+	<button type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
+
+	<script>
+		function start() {
+			const d = document.getElementById("dimensions");
+			const f0 = document.getElementById("face0");
+			const f1 = document.getElementById("face1");
+			const f2 = document.getElementById("face2");
+			const f3 = document.getElementById("face3");
+			const f4 = document.getElementById("face4");
+			const f5 = document.getElementById("face5");
+			console.log(d.value);
+		}
+	</script>
+</body>
+</html>
