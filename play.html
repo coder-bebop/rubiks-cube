@@ -22,6 +22,14 @@
 		#timer {
 			font-size: xx-large;
 		}
+		#moves 
+		{
+			flex-direction: row;
+		}
+		.move {
+			margin: 3px;
+			min-width: 45px;
+		}
 	</style>
 	<title>Rubik's Cube</title>
 </head>
@@ -34,6 +42,27 @@
 		<button type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
 		<br>
 		<button type="button" class="btn btn-primary btn-lg" onclick="stop()">Stop</button>
+		<br>
+		<div id="moves">
+			<div>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.U)">U</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.UP)">U'</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.D)">D</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.DP)">D'</button>
+			</div>
+			<div>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.R)">R</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.RP)">R'</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.L)">L</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.LP)">L'</button>
+			</div>
+			<div>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.F)">F</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.FP)">F'</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.B)">B</button>
+				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.BP)">B'</button>
+			</div>
+		</div>
 	</div>
 	<div id="cube">
 		<h1>playfield</h1>
@@ -52,6 +81,7 @@
 		function start() {
 			const d = parseInt(urlParams.get("d"));
 			let a = setup(d);
+			printCube(a);
 
 			timer = setInterval(function(){
 				document.getElementById("seconds").innerHTML=pad(++sec%60);
@@ -61,6 +91,10 @@
 
 		function stop() {
 			clearInterval(timer);
+		}
+
+		function buttonMove(move) {
+			console.log(move);
 		}
 	</script>
 </body>
