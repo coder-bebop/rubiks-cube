@@ -13,6 +13,14 @@ const moves = {
 	BP: "B'",
 }
 
+let history = [];
+
+function setup(size) {
+	let cube = createCube(size);
+	cube = shuffle(cube);
+	return cube;
+}
+
 function createCube(size) {
 	let cube = [[], [], [], [], [], []];
 	for(let i = 0; i < 6; i++) {
@@ -147,7 +155,7 @@ function doMove(cube, move) {
 		default:
 			console.log("ERROR: invalid move");
 	}
-	printCube(cube);
+	// printCube(cube);
 	if(isSolved(cube)) {
 		win();
 	}
@@ -242,11 +250,3 @@ function printHistory() {
 	}
 	console.log(str.substring(0, str.length - 2));
 }
-
-let cube = createCube(3);
-let history = [];
-
-printCube(cube);
-shuffle(cube);
-doMove(cube, moves.UP);
-printHistory();

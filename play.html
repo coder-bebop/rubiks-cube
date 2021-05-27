@@ -39,6 +39,7 @@
 		<h1>playfield</h1>
 	</div>
 
+	<script src="./matrix.js"></script>
 	<script>
 		const urlParams = new URLSearchParams(window.location.search);
 		let sec = 0;
@@ -49,7 +50,9 @@
 		}
 
 		function start() {
-			console.log(urlParams.get("d"));
+			const d = parseInt(urlParams.get("d"));
+			let a = setup(d);
+
 			timer = setInterval(function(){
 				document.getElementById("seconds").innerHTML=pad(++sec%60);
 				document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
