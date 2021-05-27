@@ -2,17 +2,62 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Rubik's Cube</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<style>
+		body {
+			display: flex;
+		}
+		#menu {
+			width: 20%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 20px;
+		}
+		#cube {
+			width: 80%;
+			height: 100%;
+		}
+		#timer {
+			font-size: xx-large;
+		}
+	</style>
+	<title>Rubik's Cube</title>
 </head>
 <body>
-	<button onclick="test()">owo</button>
+	<div id="menu">
+		<h1>Menu</h1>
+		<div id="timer">
+			<label id="minutes">00</label>:<label id="seconds">00</label>
+		</div>
+		<button type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
+		<br>
+		<button type="button" class="btn btn-primary btn-lg" onclick="stop()">Stop</button>
+	</div>
+	<div id="cube">
+		<h1>playfield</h1>
+	</div>
 
 	<script>
 		const urlParams = new URLSearchParams(window.location.search);
+		let sec = 0;
+		let timer;
 
-		function test() {
+		function pad(val) {
+			return val > 9 ? val : "0" + val;
+		}
+
+		function start() {
 			console.log(urlParams.get("d"));
+			timer = setInterval(function(){
+				document.getElementById("seconds").innerHTML=pad(++sec%60);
+				document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
+			}, 1000);
+		}
+
+		function stop() {
+			clearInterval(timer);
 		}
 	</script>
 </body>
