@@ -33,6 +33,9 @@
 		#start {
 			margin: 20px;
 		}
+		#stop {
+			margin: 20px;
+		}
 		.move {
 			margin: 3px;
 			min-width: 45px;
@@ -46,7 +49,10 @@
 		<div id="timer">
 			<label id="minutes">00</label>:<label id="seconds">00</label>
 		</div>
-		<button id="start" type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
+		<div>
+			<button id="start" type="button" class="btn btn-primary btn-lg" onclick="startTimer()">Start</button>
+			<button id="stop" type="button" class="btn btn-primary btn-lg" onclick="stopTimer()" disabled>Stop</button>
+		</div>
 		<div id="moves">
 			<div>
 				<button id="0" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.U)">U</button>
@@ -80,15 +86,23 @@
 		let sec = 0;
 		let timer;
 		let cube;
+		let firstTime = true;
 
 		function pad(val) {
 			return val > 9 ? val : "0" + val;
 		}
 
-		function start() {
+		function startTimer() {
 			toggleButtons();
+			document.getElementById("stop").disabled = false;
 			document.getElementById("start").disabled = true;
+			if (firstTime) {
+				start();
+				firstTime = false;
+			}
+		}
 
+		function start() {
 			const d = parseInt(urlParams.get("d"));
 			cube = setup(d);
 			cube = createCube(d);
@@ -100,9 +114,15 @@
 			}, 1000);
 		}
 
-		function stop() {
+		function stopTimer() {
 			toggleButtons();
+			document.getElementById("stop").disabled = true;
+			document.getElementById("start").disabled = false;
 			clearInterval(timer);
+		}
+
+		function stop() {
+			stopTimer()
 			let winStr = "The cube has been solved!\n\n"
 			winStr += "Your move history:\n"
 			winStr += getHistory();
@@ -132,6 +152,8 @@
 
 		window.start = start;
 		window.stop = stop;
+		window.startTimer = startTimer;
+		window.stopTimer = stopTimer;
 		window.buttonMove = buttonMove;
 	</script>
 </body>
