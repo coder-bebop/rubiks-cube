@@ -26,6 +26,9 @@
 		{
 			flex-direction: row;
 		}
+		#start {
+			margin: 20px;
+		}
 		.move {
 			margin: 3px;
 			min-width: 45px;
@@ -39,28 +42,25 @@
 		<div id="timer">
 			<label id="minutes">00</label>:<label id="seconds">00</label>
 		</div>
-		<button type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
-		<br>
-		<button type="button" class="btn btn-primary btn-lg" onclick="stop()">Stop</button>
-		<br>
+		<button id="start" type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
 		<div id="moves">
 			<div>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.U)">U</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.UP)">U'</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.D)">D</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.DP)">D'</button>
+				<button id="0" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.U)">U</button>
+				<button id="1" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.UP)">U'</button>
+				<button id="2" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.D)">D</button>
+				<button id="3" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.DP)">D'</button>
 			</div>
 			<div>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.R)">R</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.RP)">R'</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.L)">L</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.LP)">L'</button>
+				<button id="4" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.R)">R</button>
+				<button id="5" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.RP)">R'</button>
+				<button id="6" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.L)">L</button>
+				<button id="7" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.LP)">L'</button>
 			</div>
 			<div>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.F)">F</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.FP)">F'</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.B)">B</button>
-				<button type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.BP)">B'</button>
+				<button id="8" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.F)">F</button>
+				<button id="9" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.FP)">F'</button>
+				<button id="10" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.B)">B</button>
+				<button id="11" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.BP)">B'</button>
 			</div>
 		</div>
 	</div>
@@ -73,15 +73,19 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		let sec = 0;
 		let timer;
+		let cube;
 
 		function pad(val) {
 			return val > 9 ? val : "0" + val;
 		}
 
 		function start() {
+			toggleButtons();
+
 			const d = parseInt(urlParams.get("d"));
-			let a = setup(d);
-			printCube(a);
+			cube = setup(d);
+			// cube = createCube(d);
+			printCube(cube);
 
 			timer = setInterval(function(){
 				document.getElementById("seconds").innerHTML=pad(++sec%60);
@@ -90,12 +94,32 @@
 		}
 
 		function stop() {
+			toggleButtons();
 			clearInterval(timer);
+			console.log("!!!!!!!!!!");
+			console.log("The cube is solved.");
+			console.log("!!!!!!!!!!");
+			console.log("Move history:");
+			printHistory();
 		}
 
 		function buttonMove(move) {
-			console.log(move);
+			doMove(cube, move);
+			printCube(cube);
+			if(isSolved(cube)) {
+				stop();
+			}
 		}
+
+		function toggleButtons() {
+			let tmp;
+			for(let i = 0; i < 12; i++) {
+				tmp = document.getElementById(i);
+				tmp.disabled = !tmp.disabled;
+			}
+		}
+
+		toggleButtons();
 	</script>
 </body>
 </html>

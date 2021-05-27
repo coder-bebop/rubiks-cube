@@ -51,7 +51,7 @@ function printCube(cube) {
 }
 
 function doMove(cube, move) {
-	console.log("Move: ", move);
+	// console.log("Move: ", move);
 	history.push(move);
 	const size = cube[0].length - 1;
 	let temp;
@@ -155,10 +155,6 @@ function doMove(cube, move) {
 		default:
 			console.log("ERROR: invalid move");
 	}
-	// printCube(cube);
-	if(isSolved(cube)) {
-		win();
-	}
 	return cube;
 }
 
@@ -174,14 +170,6 @@ function isSolved(cube) {
 		}
 	}
 	return true;
-}
-
-function win() {
-	console.log("!!!!!!!!!!");
-	console.log("The cube is solved.");
-	console.log("!!!!!!!!!!");
-	console.log("Move history:");
-	printHistory();
 }
 
 function shuffle(cube) {
