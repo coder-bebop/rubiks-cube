@@ -34,6 +34,10 @@ function renderLoop() {
 	requestAnimationFrame(renderLoop);
 }
 
+function renderMove(move) {
+	console.log(move);
+}
+
 document.addEventListener("DOMContentLoaded", init);
 
 window.addEventListener("resize", function() {
@@ -41,3 +45,5 @@ window.addEventListener("resize", function() {
     camera.aspect = window.innerWidth * 0.8 / window.innerHeight;
     camera.updateProjectionMatrix();
 });
+
+export { renderMove };

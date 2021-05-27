@@ -73,7 +73,9 @@
 
 	<script type="module" src="./three.js"></script>
 	<script src="./matrix.js"></script>
-	<script>
+	<script type="module">
+		import { renderMove } from "./three.js";
+
 		const urlParams = new URLSearchParams(window.location.search);
 		let sec = 0;
 		let timer;
@@ -84,6 +86,7 @@
 		}
 
 		function start() {
+			renderMove("a");
 			toggleButtons();
 			document.getElementById("start").disabled = true;
 
@@ -126,6 +129,10 @@
 		}
 
 		toggleButtons();
+
+		window.start = start;
+		window.stop = stop;
+		window.buttonMove = buttonMove;
 	</script>
 </body>
 </html>
