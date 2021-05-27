@@ -231,10 +231,10 @@ function getRandomMove() {
     return moves[keys[keys.length * Math.random() << 0]];
 };
 
-function printHistory() {
+function getHistory() {
 	let str = "";
 	for(let i = 0; i < history.length; i++) {
 		str += (history[i] + ", ")
 	}
-	console.log(str.substring(0, str.length - 2));
+	return str.substring(0, str.length - 2);
 }

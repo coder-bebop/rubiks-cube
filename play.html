@@ -81,10 +81,11 @@
 
 		function start() {
 			toggleButtons();
+			document.getElementById("start").disabled = true;
 
 			const d = parseInt(urlParams.get("d"));
 			cube = setup(d);
-			// cube = createCube(d);
+			cube = createCube(d);
 			printCube(cube);
 
 			timer = setInterval(function(){
@@ -96,11 +97,12 @@
 		function stop() {
 			toggleButtons();
 			clearInterval(timer);
-			console.log("!!!!!!!!!!");
-			console.log("The cube is solved.");
-			console.log("!!!!!!!!!!");
-			console.log("Move history:");
-			printHistory();
+			let winStr = "The cube has been solved!\n\n"
+			winStr += "Your move history:\n"
+			winStr += getHistory();
+			winStr += "\n\nPress OK to go back to the main page."
+			alert(winStr);
+			location.href = "index.html";
 		}
 
 		function buttonMove(move) {
