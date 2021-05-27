@@ -7,6 +7,9 @@
 		body {
 			display: flex;
 		}
+		h1 {
+			margin-bottom: 30px;
+		}
 		#menu {
 			width: 20%;
 			height: 100%;
@@ -25,6 +28,7 @@
 		#moves 
 		{
 			flex-direction: row;
+			margin-top: 30px;
 		}
 		#start {
 			margin: 20px;
@@ -65,9 +69,9 @@
 		</div>
 	</div>
 	<div id="cube">
-		<h1>playfield</h1>
 	</div>
 
+	<script type="module" src="./three.js"></script>
 	<script src="./matrix.js"></script>
 	<script>
 		const urlParams = new URLSearchParams(window.location.search);
