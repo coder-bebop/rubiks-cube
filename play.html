@@ -71,15 +71,29 @@
 	<div id="cube">
 	</div>
 
-	<script type="module" src="./three.js"></script>
+	<script type="module" src="./cube.js"></script>
 	<script src="./matrix.js"></script>
 	<script type="module">
-		import { renderMove } from "./three.js";
+		import { renderMove, sendData } from "./cube.js";
 
 		const urlParams = new URLSearchParams(window.location.search);
 		let sec = 0;
 		let timer;
 		let cube;
+		
+		const d = parseInt(urlParams.get("d"));
+		const f0 = "#" + urlParams.get("f0");
+		const f1 = "#" + urlParams.get("f1");
+		const f2 = "#" + urlParams.get("f2");
+		const f3 = "#" + urlParams.get("f3");
+		const f4 = "#" + urlParams.get("f4");
+		const f5 = "#" + urlParams.get("f5");
+
+		cube = setup(d);
+		cube = createCube(d);
+		printCube(cube);
+
+		sendData(d, f0, f1, f2, f3, f4, f5);
 
 		function pad(val) {
 			return val > 9 ? val : "0" + val;
@@ -88,11 +102,6 @@
 		function start() {
 			toggleButtons();
 			document.getElementById("start").disabled = true;
-
-			const d = parseInt(urlParams.get("d"));
-			cube = setup(d);
-			cube = createCube(d);
-			printCube(cube);
 
 			timer = setInterval(function(){
 				document.getElementById("seconds").innerHTML=pad(++sec%60);

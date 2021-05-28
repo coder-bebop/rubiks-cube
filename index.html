@@ -85,12 +85,12 @@
 
 			let href = "play.html?";
 			href += "d=" + d + "&";
-			href += "f0=" + f0 + "&";
-			href += "f1=" + f1 + "&";
-			href += "f2=" + f2 + "&";
-			href += "f3=" + f3 + "&";
-			href += "f4=" + f4 + "&";
-			href += "f5=" + f5;
+			href += "f0=" + f0.substring(1, 7) + "&";
+			href += "f1=" + f1.substring(1, 7) + "&";
+			href += "f2=" + f2.substring(1, 7) + "&";
+			href += "f3=" + f3.substring(1, 7) + "&";
+			href += "f4=" + f4.substring(1, 7) + "&";
+			href += "f5=" + f5.substring(1, 7);
 
 			// console.log(href);
 			location.href = href;
