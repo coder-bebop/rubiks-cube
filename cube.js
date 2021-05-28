@@ -83,6 +83,18 @@ function renderLoop() {
 	requestAnimationFrame(renderLoop);
 }
 
+function restartScene() {
+	while(scene.children.length > 1){ 
+		scene.remove(scene.children[1]); 
+	}
+	rotationQ = [];
+	rotationCounter = 0;
+	rotating = false;
+	clearInterval(currentRotation);
+	cube = createMesh();
+	rubik(dimensions, f0, f1, f2, f3, f4, f5);
+}
+
 function renderMove(move, speed) {
 	const size = dimensions - 1;
 	let temp;
@@ -282,7 +294,7 @@ function rotateFace(rot) {
 	rotating = true;
 	currentRotation = setInterval(function() {
 		if(rotationCounter < Math.PI / 2) {
-			rotationCounter += Math.PI / 64;
+			rotationCounter += Math.PI / 32;
 
 			let axis = new THREE.Vector3(1, 0, 0);
 			switch(rot.axis) {
@@ -297,7 +309,7 @@ function rotateFace(rot) {
 			
 			for(let i = 0; i < dimensions; i++) {
 				for(let j = 0; j < dimensions; j++) {
-					rot.face[i][j].rotateAroundWorldAxis(axis, sign * Math.PI / 64);
+					rot.face[i][j].rotateAroundWorldAxis(axis, sign * Math.PI / 32);
 				}
 			}
 		} else {
@@ -372,4 +384,4 @@ window.addEventListener("resize", function() {
 	camera.updateProjectionMatrix();
 });
 
-export { renderMove, sendData };
+export { renderMove, sendData, restartScene };

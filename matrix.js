@@ -15,12 +15,6 @@ const moves = {
 
 let history = [];
 
-function setup(size) {
-	let cube = createCube(size);
-	cube = shuffle(cube);
-	return cube;
-}
-
 function createCube(size) {
 	let cube = [[], [], [], [], [], []];
 	for(let i = 0; i < 6; i++) {
@@ -51,7 +45,6 @@ function printCube(cube) {
 }
 
 function doMove(cube, move) {
-	// console.log("Move: ", move);
 	history.push(move);
 	const size = cube[0].length - 1;
 	let temp;
@@ -171,15 +164,6 @@ function isSolved(cube) {
 		}
 	}
 	return true;
-}
-
-function shuffle(cube) {
-	const moves = 100;
-	for(let i = 0; i < 100; i++) {
-		cube = doMove(cube, getRandomMove());
-	}
-	history = [];
-	return cube;
 }
 
 function rotateClockwise(a) {

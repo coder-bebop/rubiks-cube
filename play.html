@@ -53,7 +53,7 @@
 			<label id="minutes">00</label>:<label id="seconds">00</label>
 		</div>
 		<div>
-			<button id="start" type="button" class="btn btn-primary btn-lg" onclick="startTimer()">Start</button>
+			<button id="start" type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
 			<button id="stop" type="button" class="btn btn-primary btn-lg" onclick="stopTimer()" disabled>Stop</button>
 		</div>
 		<div id="moves">
@@ -84,7 +84,7 @@
 	<script type="module" src="./cube.js"></script>
 	<script src="./matrix.js"></script>
 	<script type="module">
-		import { renderMove, sendData } from "./cube.js";
+		import { renderMove, sendData, restartScene } from "./cube.js";
 
 		const urlParams = new URLSearchParams(window.location.search);
 		let sec = 0;
@@ -109,23 +109,24 @@
 		function startTimer() {
 			enableButtons();
 			document.getElementById("stop").disabled = false;
-			document.getElementById("start").disabled = true;
 			timer = setInterval(function(){
 				document.getElementById("seconds").innerHTML=pad(++sec%60);
 				document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
 			}, 1000);
-
-			if (newCube) {
-				start();
-				newCube = false;
-			}
 		}
 
-		function start() {
-			document.getElementById("restart").disabled = false;
-			const d = parseInt(urlParams.get("d"));
-			cube = setup(d);
-			cube = createCube(d);
+		async function start() {
+			document.getElementById("start").disabled = true;
+
+			if (newCube) {
+				newCube = false;
+				cube = createCube(d);
+				await shuffle();
+				sec = 0;
+				document.getElementById("restart").disabled = false;
+			}
+
+			startTimer();
 		}
 
 		function stopTimer() {
@@ -146,19 +147,33 @@
 			location.href = "index.html";
 		}
 
-		function restart() {
+		async function restart() {
+			document.getElementById("restart").disabled = true;
 			stopTimer();
 			let history = [];
 			newCube = true;
 			sec = 0;
 			document.getElementById("seconds").innerHTML=pad(++sec%60);
 			document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
-			startTimer();
+			restartScene();
+			await start();
+			document.getElementById("restart").disabled = false;
+		}
+
+		async function shuffle() {
+			const moves = 25;
+			for(let i = 0; i < moves; i++) {
+				let move = getRandomMove()
+				doMove(cube, move);
+				renderMove(move, 1);
+				await sleep(100);
+			}
+			history = [];
 		}
 
 		function buttonMove(move) {
 			doMove(cube, move);
-			renderMove(move, 5);
+			renderMove(move, 1);
 			if(isSolved(cube)) {
 				stop();
 			}
