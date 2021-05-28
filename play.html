@@ -36,6 +36,9 @@
 		#stop {
 			margin: 20px;
 		}
+		#restart {
+			margin: 20px;
+		}
 		.move {
 			margin: 3px;
 			min-width: 45px;
@@ -73,6 +76,7 @@
 				<button id="11" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.BP)">B'</button>
 			</div>
 		</div>
+		<button id="restart" type="button" class="btn btn-primary btn-lg" onclick="restart()" disabled>Restart</button>
 	</div>
 	<div id="cube">
 	</div>
@@ -93,9 +97,14 @@
 		}
 
 		function startTimer() {
-			toggleButtons();
+			enableButtons();
 			document.getElementById("stop").disabled = false;
 			document.getElementById("start").disabled = true;
+			timer = setInterval(function(){
+				document.getElementById("seconds").innerHTML=pad(++sec%60);
+				document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
+			}, 1000);
+
 			if (firstTime) {
 				start();
 				firstTime = false;
@@ -103,19 +112,15 @@
 		}
 
 		function start() {
+			document.getElementById("restart").disabled = false;
 			const d = parseInt(urlParams.get("d"));
 			cube = setup(d);
 			cube = createCube(d);
 			printCube(cube);
-
-			timer = setInterval(function(){
-				document.getElementById("seconds").innerHTML=pad(++sec%60);
-				document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
-			}, 1000);
 		}
 
 		function stopTimer() {
-			toggleButtons();
+			disableButtons();
 			document.getElementById("stop").disabled = true;
 			document.getElementById("start").disabled = false;
 			clearInterval(timer);
@@ -131,6 +136,14 @@
 			location.href = "index.html";
 		}
 
+		function restart() {
+			stopTimer();
+			let history = [];
+			firstTime = true;
+			sec = 0;
+			startTimer();
+		}
+
 		function buttonMove(move) {
 			doMove(cube, move);
 			renderMove(move);
@@ -140,20 +153,30 @@
 			}
 		}
 
-		function toggleButtons() {
+		function enableButtons() {
 			let tmp;
 			for(let i = 0; i < 12; i++) {
 				tmp = document.getElementById(i);
-				tmp.disabled = !tmp.disabled;
+				tmp.disabled = false;
 			}
 		}
 
-		toggleButtons();
+		function disableButtons() {
+			let tmp;
+			for(let i = 0; i < 12; i++) {
+				tmp = document.getElementById(i);
+				tmp.disabled = true;
+			}
+		}
+
+		disableButtons();
+		document.getElementById("restart").disabled = true;
 
 		window.start = start;
 		window.stop = stop;
 		window.startTimer = startTimer;
 		window.stopTimer = stopTimer;
+		window.restart = restart;
 		window.buttonMove = buttonMove;
 	</script>
 </body>
