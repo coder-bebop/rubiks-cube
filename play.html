@@ -76,7 +76,8 @@
 				<button id="11" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.BP)">B'</button>
 			</div>
 		</div>
-		<button id="restart" type="button" class="btn btn-primary btn-lg" onclick="restart()" disabled>Restart</button>
+		<button id="restart" type="button" class="btn btn-primary btn-lg" onclick="restart()" disabled>Restart cube</button>
+		<button id="resetCamera" type="button" class="btn btn-primary btn-lg" onclick="resetCamera()">Reset camera</button>
 		<br><br>
 		<audio controls>
 			<source src="assets/soldado.mp3" type="audio/mp3">
@@ -88,7 +89,7 @@
 	<script type="module" src="./cube.js"></script>
 	<script src="./matrix.js"></script>
 	<script type="module">
-		import { renderMove, sendData, restartScene } from "./cube.js";
+		import { renderMove, sendData, restartScene, resetCamera } from "./cube.js";
 
 		const urlParams = new URLSearchParams(window.location.search);
 		let sec = 0;
@@ -218,6 +219,7 @@
 		window.startTimer = startTimer;
 		window.stopTimer = stopTimer;
 		window.restart = restart;
+		window.resetCamera = resetCamera;
 		window.buttonMove = buttonMove;
 	</script>
 </body>

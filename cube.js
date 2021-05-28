@@ -376,6 +376,11 @@ function setColumn(a, n, col) {
 	return a;
 }
 
+function resetCamera() {
+	camera.position.set(0, 0, 20);
+	camera.lookAt(0, 0, 0);
+}
+
 document.addEventListener("DOMContentLoaded", init);
 
 window.addEventListener("resize", function() {
@@ -384,4 +389,4 @@ window.addEventListener("resize", function() {
 	camera.updateProjectionMatrix();
 });
 
-export { renderMove, sendData, restartScene };
+export { renderMove, sendData, restartScene, resetCamera };
