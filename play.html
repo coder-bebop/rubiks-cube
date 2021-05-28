@@ -77,6 +77,10 @@
 			</div>
 		</div>
 		<button id="restart" type="button" class="btn btn-primary btn-lg" onclick="restart()" disabled>Restart</button>
+		<br><br>
+		<audio controls>
+			<source src="assets/soldado.mp3" type="audio/mp3">
+		</audio>
 	</div>
 	<div id="cube">
 	</div>
@@ -91,7 +95,7 @@
 		let timer;
 		let cube;
 		let newCube = true;
-		let sfx = new Audio("turn.mp3");
+		let sfx = new Audio("assets/turn.mp3");
 		
 		const d = parseInt(urlParams.get("d"));
 		const f0 = "#" + urlParams.get("f0");
@@ -170,7 +174,7 @@
 				let move = getRandomMove()
 				doMove(cube, move);
 				renderMove(move, 1);
-				await sleep(80);
+				await sleep(150);
 			}
 			history = [];
 		}
