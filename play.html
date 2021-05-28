@@ -91,6 +91,7 @@
 		let timer;
 		let cube;
 		let newCube = true;
+		let sfx = new Audio("turn.mp3");
 		
 		const d = parseInt(urlParams.get("d"));
 		const f0 = "#" + urlParams.get("f0");
@@ -163,6 +164,9 @@
 		async function shuffle() {
 			const moves = 25;
 			for(let i = 0; i < moves; i++) {
+				sfx.pause();
+				sfx.currentTime = 0;
+				sfx.play();
 				let move = getRandomMove()
 				doMove(cube, move);
 				renderMove(move, 1);
@@ -172,6 +176,9 @@
 		}
 
 		function buttonMove(move) {
+			sfx.pause();
+			sfx.currentTime = 0;
+			sfx.play();
 			doMove(cube, move);
 			renderMove(move, 10);
 			if(isSolved(cube)) {
