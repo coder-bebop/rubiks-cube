@@ -33,6 +33,12 @@
 		#start {
 			margin: 20px;
 		}
+		#stop {
+			margin: 20px;
+		}
+		#restart {
+			margin: 20px;
+		}
 		.move {
 			margin: 3px;
 			min-width: 45px;
@@ -46,7 +52,10 @@
 		<div id="timer">
 			<label id="minutes">00</label>:<label id="seconds">00</label>
 		</div>
-		<button id="start" type="button" class="btn btn-primary btn-lg" onclick="start()">Start</button>
+		<div>
+			<button id="start" type="button" class="btn btn-primary btn-lg" onclick="startTimer()">Start</button>
+			<button id="stop" type="button" class="btn btn-primary btn-lg" onclick="stopTimer()" disabled>Stop</button>
+		</div>
 		<div id="moves">
 			<div>
 				<button id="0" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.U)">U</button>
@@ -67,6 +76,7 @@
 				<button id="11" type="button" class="btn btn-outline-primary move" onclick="buttonMove(moves.BP)">B'</button>
 			</div>
 		</div>
+		<button id="restart" type="button" class="btn btn-primary btn-lg" onclick="restart()" disabled>Restart</button>
 	</div>
 	<div id="cube">
 	</div>
@@ -80,6 +90,7 @@
 		let sec = 0;
 		let timer;
 		let cube;
+		let firstTime = true;
 		
 		const d = parseInt(urlParams.get("d"));
 		const f0 = "#" + urlParams.get("f0");
@@ -99,25 +110,52 @@
 			return val > 9 ? val : "0" + val;
 		}
 
-		function start() {
-			toggleButtons();
+		function startTimer() {
+			enableButtons();
+			document.getElementById("stop").disabled = false;
 			document.getElementById("start").disabled = true;
-
 			timer = setInterval(function(){
 				document.getElementById("seconds").innerHTML=pad(++sec%60);
 				document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
 			}, 1000);
+
+			if (firstTime) {
+				start();
+				firstTime = false;
+			}
+		}
+
+		function start() {
+			document.getElementById("restart").disabled = false;
+			const d = parseInt(urlParams.get("d"));
+			cube = setup(d);
+			cube = createCube(d);
+			printCube(cube);
+		}
+
+		function stopTimer() {
+			disableButtons();
+			document.getElementById("stop").disabled = true;
+			document.getElementById("start").disabled = false;
+			clearInterval(timer);
 		}
 
 		function stop() {
-			toggleButtons();
-			clearInterval(timer);
+			stopTimer()
 			let winStr = "The cube has been solved!\n\n"
 			winStr += "Your move history:\n"
 			winStr += getHistory();
 			winStr += "\n\nPress OK to go back to the main page."
 			alert(winStr);
 			location.href = "index.html";
+		}
+
+		function restart() {
+			stopTimer();
+			let history = [];
+			firstTime = true;
+			sec = 0;
+			startTimer();
 		}
 
 		function buttonMove(move) {
@@ -129,18 +167,30 @@
 			}
 		}
 
-		function toggleButtons() {
+		function enableButtons() {
 			let tmp;
 			for(let i = 0; i < 12; i++) {
 				tmp = document.getElementById(i);
-				tmp.disabled = !tmp.disabled;
+				tmp.disabled = false;
 			}
 		}
 
-		toggleButtons();
+		function disableButtons() {
+			let tmp;
+			for(let i = 0; i < 12; i++) {
+				tmp = document.getElementById(i);
+				tmp.disabled = true;
+			}
+		}
+
+		disableButtons();
+		document.getElementById("restart").disabled = true;
 
 		window.start = start;
 		window.stop = stop;
+		window.startTimer = startTimer;
+		window.stopTimer = stopTimer;
+		window.restart = restart;
 		window.buttonMove = buttonMove;
 	</script>
 </body>
