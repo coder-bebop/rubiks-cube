@@ -3,8 +3,26 @@ import { OrbitControls } from "https://unpkg.com/three@0.124.0/examples/jsm/cont
 
 "use strict";
 
-let renderer, scene, camera, cameraControls, cubeMesh;
+let renderer, scene, camera, cameraControls;
 let dimensions, f0, f1, f2, f3, f4, f5;
+let rotationQ = [];
+let currentRotation, rotationCounter = 0, rotating = false, front;
+
+THREE.Object3D.prototype.rotateAroundWorldAxis = function() {
+    var q = new THREE.Quaternion();
+
+    return function rotateAroundWorldAxis( axis, angle ) {
+        q.setFromAxisAngle( axis, angle );
+
+        this.applyQuaternion( q );
+
+        this.position.sub( new THREE.Vector3(0, 0, 0) );
+        this.position.applyQuaternion( q );
+        this.position.add( new THREE.Vector3(0, 0, 0) );
+
+        return this;
+    }
+}();
 
 function init() {
 	renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -21,8 +39,6 @@ function init() {
 	camera.position.set(0, 0, 20);
 	cameraControls = new OrbitControls(camera, renderer.domElement);
 
-	let cubeMesh = [[], [], [], [], [], []];
-
 	scene.add(new THREE.AmbientLight(0xffffff));
 
 	rubik(dimensions, f0, f1, f2, f3, f4, f5);
@@ -32,14 +48,15 @@ function init() {
 
 function renderLoop() {
 	renderer.render(scene, camera);
+	if(rotationQ.length > 0) {
+		rotateFace(rotationQ[0]);
+	}
 	requestAnimationFrame(renderLoop);
 }
 
 function renderMove(move) {
 	console.log(move);
 }
-
-let cubes_array = [];
 
 function rubik(dimensions, f0, f1, f2, f3, f4, f5) {
 	let colours = [f1, f3, f4, f5, f0, f2];
@@ -60,22 +77,68 @@ function rubik(dimensions, f0, f1, f2, f3, f4, f5) {
 		cube.rubikPosition = cube.position.clone();
 
 		scene.add(cube);
-		cubes_array.push(cube);
+		return cube;
 	}
 
+	front = [];
+	let c;
 	let offset = (dimensions - 1) / 2;
 	for(let i = 0; i < dimensions; i ++) {
 		for(let j = 0; j < dimensions; j ++) {
 			for(let k = 0; k < dimensions; k ++) {
+				let x = (i - offset) * increment,
+					y = (j - offset) * increment,
+					z = (k - offset) * increment;
 
-			let x = (i - offset) * increment,
-				y = (j - offset) * increment,
-				z = (k - offset) * increment;
-
-			newCube(x, y, z);
+				c = newCube(x, y, z);
+				console.log(i, j, k);
+				if(k == dimensions - 1) {
+					front.push(c);
+				}
 			}
 		}
 	}
+	addRotation(front, true, "z", 5);
+}
+
+function addRotation(face, cw, axis, speed) {
+	rotationQ.push({
+		face: face,
+		cw: cw,
+		axis, axis,
+		speed: speed,
+	});
+}
+
+function rotateFace(rot) {
+	if(rotating) {
+		return;
+	}
+
+	rotating = true;
+	currentRotation = setInterval(function() {
+		if(rotationCounter < Math.PI / 2) {
+			rotationCounter += Math.PI / 64;
+			for(let i = 0; i < rot.face.length; i++) {
+				let axis = new THREE.Vector3(1, 0, 0);
+				switch(rot.axis) {
+					case "y":
+						axis = new THREE.Vector3(0, 1, 0);
+						break;
+					case "z":
+						axis = new THREE.Vector3(0, 0, 1);
+						break;
+				}
+				let sign = rot.cw ? -1 : 1
+				rot.face[i].rotateAroundWorldAxis(axis, sign * Math.PI / 64);
+			}
+		} else {
+			clearInterval(currentRotation);
+			rotationQ.shift();
+			rotating = false;
+			rotationCounter = 0;
+		}
+	}, rot.speed);
 }
 
 function sendData(a, b, c, d, e, f, g) {
