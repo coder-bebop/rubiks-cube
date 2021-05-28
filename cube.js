@@ -6,7 +6,7 @@ import { OrbitControls } from "https://unpkg.com/three@0.124.0/examples/jsm/cont
 let renderer, scene, camera, cameraControls;
 let dimensions, f0, f1, f2, f3, f4, f5;
 let rotationQ = [];
-let currentRotation, rubiksMesh, rotationCounter = 0, rotating = false;
+let currentRotation, cube, rotationCounter = 0, rotating = false;
 
 const moves = {
 	U: "U",
@@ -56,23 +56,23 @@ function init() {
 
 	scene.add(new THREE.AmbientLight(0xffffff));
 
-	rubiksMesh = createMesh();
+	cube = createMesh();
 	rubik(dimensions, f0, f1, f2, f3, f4, f5);
 
 	renderLoop();
 }
 
 function createMesh() {
-	rubiksMesh = [[], [], [], [], [], []];
+	cube = [[], [], [], [], [], []];
 	for(let i = 0; i < 6; i++) {
 		for(let j = 0; j < dimensions; j++) {
-			rubiksMesh[i].push([]);
+			cube[i].push([]);
 			for(let k = 0; k < dimensions; k++) {
-				rubiksMesh[i][j].push(0);
+				cube[i][j].push(0);
 			}
 		}
 	}
-	return rubiksMesh;
+	return cube;
 }
 
 function renderLoop() {
@@ -83,11 +83,12 @@ function renderLoop() {
 	requestAnimationFrame(renderLoop);
 }
 
-function renderMove(move) {
+function renderMove(move, speed) {
 	const size = dimensions - 1;
 	let temp;
 	switch(move) {
 		case moves.U:
+			addRotation(cube[4], true, "y", speed);
 			cube[4] = rotateClockwise(cube[4]);
 			temp = cube[0][0];
 			cube[0][0] = cube[1][0];
@@ -96,6 +97,7 @@ function renderMove(move) {
 			cube[3][0] = temp;
 			break;
 		case moves.UP:
+			addRotation(cube[4], false, "y", speed);
 			cube[4] = rotateCounterClockwise(cube[4]);
 			temp = cube[0][0];
 			cube[0][0] = cube[3][0];
@@ -104,6 +106,7 @@ function renderMove(move) {
 			cube[1][0] = temp;
 			break;
 		case moves.D:
+			addRotation(cube[5], false, "y", speed);
 			cube[5] = rotateClockwise(cube[5]);
 			temp = cube[0][size];
 			cube[0][size] = cube[3][size];
@@ -112,6 +115,7 @@ function renderMove(move) {
 			cube[1][size] = temp;
 			break;
 		case moves.DP:
+			addRotation(cube[5], true, "y", speed);
 			cube[5] = rotateCounterClockwise(cube[5]);
 			temp = cube[0][size];
 			cube[0][size] = cube[1][size];
@@ -120,6 +124,7 @@ function renderMove(move) {
 			cube[3][size] = temp;
 			break;
 		case moves.R:
+			addRotation(cube[1], true, "x", speed);
 			cube[1] = rotateClockwise(cube[1]);
 			temp = getColumn(cube[0], size);
 			setColumn(cube[0], size, getColumn(cube[5], size));
@@ -128,6 +133,7 @@ function renderMove(move) {
 			setColumn(cube[4], size, temp);
 			break;
 		case moves.RP:
+			addRotation(cube[1], false, "x", speed);
 			cube[1] = rotateCounterClockwise(cube[1]);
 			temp = getColumn(cube[0], size);
 			setColumn(cube[0], size, getColumn(cube[4], size));
@@ -136,6 +142,7 @@ function renderMove(move) {
 			setColumn(cube[5], size, temp);
 			break;
 		case moves.L:
+			addRotation(cube[3], false, "x", speed);
 			cube[3] = rotateClockwise(cube[3]);
 			temp = getColumn(cube[0], 0);
 			setColumn(cube[0], 0, getColumn(cube[4], 0));
@@ -144,6 +151,7 @@ function renderMove(move) {
 			setColumn(cube[5], 0, temp);
 			break;
 		case moves.LP:
+			addRotation(cube[3], true, "x", speed);
 			cube[3] = rotateCounterClockwise(cube[3]);
 			temp = getColumn(cube[0], 0);
 			setColumn(cube[0], 0, getColumn(cube[5], 0));
@@ -152,6 +160,7 @@ function renderMove(move) {
 			setColumn(cube[4], 0, temp);
 			break;
 		case moves.F:
+			addRotation(cube[0], true, "z", speed);
 			cube[0] = rotateClockwise(cube[0]);
 			temp = cube[4][size];
 			cube[4][size] = getColumn(cube[3], size).reverse();
@@ -160,6 +169,7 @@ function renderMove(move) {
 			setColumn(cube[1], 0, temp);
 			break;
 		case moves.FP:
+			addRotation(cube[0], false, "z", speed);
 			cube[0] = rotateCounterClockwise(cube[0]);
 			temp = cube[4][size];
 			cube[4][size] = getColumn(cube[1], 0);
@@ -168,6 +178,7 @@ function renderMove(move) {
 			setColumn(cube[3], size, temp.slice().reverse());
 			break;
 		case moves.B:
+			addRotation(cube[2], false, "z", speed);
 			cube[2] = rotateClockwise(cube[2]);
 			temp = cube[4][0];
 			cube[4][0] = getColumn(cube[1], size);
@@ -176,10 +187,13 @@ function renderMove(move) {
 			setColumn(cube[3], 0, temp.slice().reverse());
 			break;
 		case moves.BP:
+			addRotation(cube[2], true, "z", speed);
 			cube[2] = rotateCounterClockwise(cube[2]);
 			temp = cube[4][0];
 			cube[4][0] = getColumn(cube[3], 0).reverse();
+			console.log(cube);
 			setColumn(cube[3], 0, cube[5][size]);
+			console.log(cube);
 			cube[5][size] = getColumn(cube[1], size).reverse();
 			setColumn(cube[1], size, temp);
 			break;
@@ -227,31 +241,30 @@ function rubik(dimensions, f0, f1, f2, f3, f4, f5) {
 			}
 		}
 	}
-	// addRotation(front, true, "z", 5);
 }
 
 function getCoords(i, j, k) {
 	let res = [];
 	if(i == 0) {
-		res.push([3, dimensions - j - 1, dimensions - k - 1]);
+		res.push([3, dimensions - j - 1, k]);
 	} else if(i == dimensions - 1) {
-		res.push([1, dimensions - j - 1, k]);
+		res.push([1, dimensions - j - 1, dimensions - k - 1]);
 	}
 	if(j == 0) {
-		res.push([5, k, i]);
+		res.push([5, dimensions - k - 1, i]);
 	} else if(j == dimensions - 1) {
-		res.push([4, dimensions - k - 1, i]);
+		res.push([4, k, i]);
 	}
 	if(k == 0) {
-		res.push([0, dimensions - j - 1, i]);
-	} else if(k == dimensions - 1) {
 		res.push([2, dimensions - j - 1, dimensions - i - 1]);
+	} else if(k == dimensions - 1) {
+		res.push([0, dimensions - j - 1, i]);
 	}
 	return res;
 }
 
-function addCube(cube, face, i, j) {
-	rubiksMesh[face][i][j] = cube;
+function addCube(singleCube, face, i, j) {
+	cube[face][i][j] = singleCube;
 }
 
 function addRotation(face, cw, axis, speed) {
@@ -272,18 +285,22 @@ function rotateFace(rot) {
 	currentRotation = setInterval(function() {
 		if(rotationCounter < Math.PI / 2) {
 			rotationCounter += Math.PI / 64;
-			for(let i = 0; i < rot.face.length; i++) {
-				let axis = new THREE.Vector3(1, 0, 0);
-				switch(rot.axis) {
-					case "y":
-						axis = new THREE.Vector3(0, 1, 0);
-						break;
-					case "z":
-						axis = new THREE.Vector3(0, 0, 1);
-						break;
+
+			let axis = new THREE.Vector3(1, 0, 0);
+			switch(rot.axis) {
+				case "y":
+					axis = new THREE.Vector3(0, 1, 0);
+					break;
+				case "z":
+					axis = new THREE.Vector3(0, 0, 1);
+					break;
+			}
+			let sign = rot.cw ? -1 : 1
+			
+			for(let i = 0; i < dimensions; i++) {
+				for(let j = 0; j < dimensions; j++) {
+					rot.face[i][j].rotateAroundWorldAxis(axis, sign * Math.PI / 64);
 				}
-				let sign = rot.cw ? -1 : 1
-				rot.face[i].rotateAroundWorldAxis(axis, sign * Math.PI / 64);
 			}
 		} else {
 			clearInterval(currentRotation);
@@ -302,6 +319,51 @@ function sendData(a, b, c, d, e, f, g) {
 	f3 = e;
 	f4 = f;
 	f5 = g;
+}
+
+function rotateClockwise(a) {
+	var n=a.length;
+	for (var i=0; i<n/2; i++) {
+		for (var j=i; j<n-i-1; j++) {
+			var tmp=a[i][j];
+			a[i][j]=a[n-j-1][i];
+			a[n-j-1][i]=a[n-i-1][n-j-1];
+			a[n-i-1][n-j-1]=a[j][n-i-1];
+			a[j][n-i-1]=tmp;
+		}
+	}
+	return a;
+}
+
+function rotateCounterClockwise(a) {
+	var n=a.length;
+	for (var i=0; i<n/2; i++) {
+		for (var j=i; j<n-i-1; j++) {
+			var tmp=a[i][j];
+			a[i][j]=a[j][n-i-1];
+			a[j][n-i-1]=a[n-i-1][n-j-1];
+			a[n-i-1][n-j-1]=a[n-j-1][i];
+			a[n-j-1][i]=tmp;
+		}
+	}
+	return a;
+}
+
+function getColumn(a, n) {
+	let res = [];
+	const size = a.length;
+	for(let i = 0; i < size; i++) {
+		res.push(a[i][n]);
+	}
+	return res;
+}
+
+function setColumn(a, n, col) {
+	const size = a.length;
+	for(let i = 0; i < size; i++) {
+		a[i][n] = col[i];
+	}
+	return a;
 }
 
 document.addEventListener("DOMContentLoaded", init);
