@@ -294,7 +294,7 @@ function rotateFace(rot) {
 	rotating = true;
 	currentRotation = setInterval(function() {
 		if(rotationCounter < Math.PI / 2) {
-			rotationCounter += Math.PI / 32;
+			rotationCounter += Math.PI / 16;
 
 			let axis = new THREE.Vector3(1, 0, 0);
 			switch(rot.axis) {
@@ -309,7 +309,7 @@ function rotateFace(rot) {
 			
 			for(let i = 0; i < dimensions; i++) {
 				for(let j = 0; j < dimensions; j++) {
-					rot.face[i][j].rotateAroundWorldAxis(axis, sign * Math.PI / 32);
+					rot.face[i][j].rotateAroundWorldAxis(axis, sign * Math.PI / 16);
 				}
 			}
 		} else {

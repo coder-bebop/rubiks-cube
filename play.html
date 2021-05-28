@@ -166,14 +166,14 @@
 				let move = getRandomMove()
 				doMove(cube, move);
 				renderMove(move, 1);
-				await sleep(100);
+				await sleep(80);
 			}
 			history = [];
 		}
 
 		function buttonMove(move) {
 			doMove(cube, move);
-			renderMove(move, 1);
+			renderMove(move, 10);
 			if(isSolved(cube)) {
 				stop();
 			}
