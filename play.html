@@ -126,7 +126,6 @@
 			const d = parseInt(urlParams.get("d"));
 			cube = setup(d);
 			cube = createCube(d);
-			printCube(cube);
 		}
 
 		function stopTimer() {
@@ -159,7 +158,6 @@
 		function buttonMove(move) {
 			doMove(cube, move);
 			renderMove(move, 5);
-			printCube(cube);
 			if(isSolved(cube)) {
 				stop();
 			}

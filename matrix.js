@@ -161,9 +161,10 @@ function doMove(cube, move) {
 function isSolved(cube) {
 	const size = cube[0].length;
 	for(let i = 0; i < 6; i++) {
+		let val = cube[i][0][0];
 		for(let j = 0; j < size; j++) {
 			for(let k = 0; k < size; k++) {
-				if(cube[i][j][k] != i) {
+				if(cube[i][j][k] != val) {
 					return false;
 				}
 			}

@@ -191,9 +191,7 @@ function renderMove(move, speed) {
 			cube[2] = rotateCounterClockwise(cube[2]);
 			temp = cube[4][0];
 			cube[4][0] = getColumn(cube[3], 0).reverse();
-			console.log(cube);
 			setColumn(cube[3], 0, cube[5][size]);
-			console.log(cube);
 			cube[5][size] = getColumn(cube[1], size).reverse();
 			setColumn(cube[1], size, temp);
 			break;
