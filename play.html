@@ -90,7 +90,7 @@
 		let sec = 0;
 		let timer;
 		let cube;
-		let firstTime = true;
+		let newCube = true;
 		
 		const d = parseInt(urlParams.get("d"));
 		const f0 = "#" + urlParams.get("f0");
@@ -119,9 +119,9 @@
 				document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
 			}, 1000);
 
-			if (firstTime) {
+			if (newCube) {
 				start();
-				firstTime = false;
+				newCube = false;
 			}
 		}
 
@@ -153,8 +153,10 @@
 		function restart() {
 			stopTimer();
 			let history = [];
-			firstTime = true;
+			newCube = true;
 			sec = 0;
+			document.getElementById("seconds").innerHTML=pad(++sec%60);
+			document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
 			startTimer();
 		}
 
