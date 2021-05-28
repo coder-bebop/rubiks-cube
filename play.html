@@ -135,12 +135,13 @@
 			clearInterval(timer);
 		}
 
-		function stop() {
+		async function stop() {
 			stopTimer()
 			let winStr = "The cube has been solved!\n\n"
 			winStr += "Your move history:\n"
 			winStr += getHistory();
 			winStr += "\n\nPress OK to go back to the main page."
+			await sleep(250);
 			alert(winStr);
 			location.href = "index.html";
 		}
@@ -177,6 +178,10 @@
 				tmp = document.getElementById(i);
 				tmp.disabled = true;
 			}
+		}
+
+		function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
 		}
 
 		disableButtons();
